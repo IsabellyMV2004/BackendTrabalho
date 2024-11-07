@@ -149,7 +149,7 @@ export default class ProdutoCtrl {
 
         }
     }
-
+/*
     excluir(requisicao, resposta) {
         //preparar o destinatário que a resposta estará no formato JSON
         resposta.type("application/json");
@@ -193,6 +193,44 @@ export default class ProdutoCtrl {
 
         }
     }
+*/
+excluir(requisicao, resposta) {
+    resposta.type("application/json");
+    // Verificando se o método da requisição é DELETE
+    if (requisicao.method == 'DELETE') {
+        const codigo = parseInt(requisicao.params.codigo); // Garantir que o código seja um número
+
+        // Validar se o código é válido
+        if (isNaN(codigo) || codigo <= 0) { 
+            resposta.status(400).json({
+                "status": false,
+                "mensagem": "Informe um código válido de um produto conforme documentação da API."
+            });
+            return; // Impedir a execução se a validação falhar
+        }
+
+        const produto = new Produto(codigo);
+        produto.excluir()
+            .then(() => {
+                resposta.status(200).json({
+                    "status": true,
+                    "mensagem": "Produto excluído com sucesso!",
+                });
+            })
+            .catch((erro) => {
+                resposta.status(500).json({
+                    "status": false,
+                    "mensagem": "Não foi possível excluir o produto: " + erro.message
+                });
+            });
+    } else {
+        resposta.status(400).json({
+            "status": false,
+            "mensagem": "Requisição inválida! Consulte a documentação da API."
+        });
+    }
+}
+
 
     consultar(requisicao, resposta) {
         resposta.type("application/json");

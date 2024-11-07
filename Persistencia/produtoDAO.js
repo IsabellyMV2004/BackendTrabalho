@@ -110,7 +110,7 @@ export default class ProdutoDAO {
         await conexao.release();
         return listaProdutos;
     }
-    async excluir(produto) {
+   /* async excluir(produto) {
         if (produto instanceof Produto) {
             const conexao = await conectar();
             const sql = `DELETE FROM produto WHERE codigo = ?`;
@@ -120,5 +120,30 @@ export default class ProdutoDAO {
             await conexao.execute(sql, parametros);
             await conexao.release(); //libera a conexão
         }
-    }
+    }*/
+
+        async excluir(produto) {
+            // Verifica se o código do produto é válido
+            if (!produto || !produto.codigo || produto.codigo <= 0) {
+                throw new Error("Código inválido para exclusão.");
+            }
+    
+            // Consulta SQL para excluir o produto baseado no código
+            const query = `DELETE FROM produtos WHERE codigo = ?`;
+    
+            // Executa a consulta no banco de dados
+            try {
+                const result = await db.query(query, [produto.codigo]);
+    
+                // Verifica se algum produto foi excluído
+                if (result.affectedRows === 0) {
+                    throw new Error("Produto não encontrado ou já excluído.");
+                }
+    
+                console.log(`Produto com código ${produto.codigo} excluído com sucesso.`);
+            } catch (erro) {
+                // Lança erro se falhar ao excluir ou se ocorrer algum problema na execução da query
+                throw new Error(`Erro ao excluir o produto: ${erro.message}`);
+            }
+        }
 }
