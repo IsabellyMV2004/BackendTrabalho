@@ -105,9 +105,9 @@ export default class Categoria {
         await usoDAO.gravar(this);
     }
 
-    async editar(){
-        const usoDAO = new UsuarioDAO();
-        await usoDAO.editar(this);
+    async alterar(){
+        const prodDAO = new UsuarioDAO();
+        await prodDAO.alterar(this);
     }
 
     async excluir(){

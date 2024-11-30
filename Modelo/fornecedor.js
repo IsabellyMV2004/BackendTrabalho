@@ -7,6 +7,7 @@ export default class Fornecedor {
     #endereco;
     #contato;
     #cpf;
+    #produtos = [];
 
     // Construtor da classe
     constructor(codigo, nome, endereco, contato, cpf) {
@@ -15,7 +16,9 @@ export default class Fornecedor {
         this.#endereco = endereco;
         this.#contato = contato;
         this.#cpf = cpf;
+        this.#produtos = []; // Inicializa a lista de produtos como vazia
     }
+    
 
     // Método get para o atributo codigo
     get codigo() {
@@ -64,6 +67,27 @@ export default class Fornecedor {
         this.#cpf = value;
     }
 
+    get produtos() {
+        return this.#produtos;
+    }
+    
+    adicionarProduto(produto) {
+        if (produto) {
+            this.#produtos.push(produto);
+        } else {
+            throw new Error("Produto inválido.");
+        }
+    }
+    
+    removerProduto(produtoId) {
+        this.#produtos = this.#produtos.filter(produto => produto.codigo !== produtoId);
+    }
+    
+    listarProdutos() {
+        return this.#produtos;
+    }
+    
+
     // Método toJSON para conversão em JSON
     toJSON() {
         return {
@@ -71,7 +95,8 @@ export default class Fornecedor {
             nome: this.#nome,
             endereco: this.#endereco,
             contato: this.#contato,
-            cpf: this.#cpf
+            cpf: this.#cpf,
+            produtos: this.#produtos.map(produto => produto.toJSON())
         };
     }
 
@@ -80,9 +105,9 @@ export default class Fornecedor {
         await fornDAO.gravar(this);
     }
 
-    async editar(){
-        const fornDAO = new FornecedorDAO();
-        await fornDAO.editar(this);
+    async alterar(){
+        const prodDAO = new FornecedorDAO();
+        await prodDAO.alterar(this);
     }
 
     async excluir(){

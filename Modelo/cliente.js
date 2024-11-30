@@ -3,12 +3,18 @@ import ClienteDAO from "../Persistencia/clienteDAO.js";
 export default class Cliente {
     // Atributos privados usando a sintaxe #
     #codigo;
-    #descricao;
+    #nome;
+    #endereco;
+    #telefone;
+    #email;
 
     // Construtor da classe
-    constructor(codigo, descricao) {
-        this.#codigo = codigo;       // Atribuindo valor ao atributo privado
-        this.#descricao = descricao;  // Atribuindo valor ao atributo privado
+    constructor(codigo, nome, endereco, telefone, email) {
+        this.#codigo = codigo;    
+        this.#nome = nome;  
+        this.#endereco = endereco;
+        this.#telefone = telefone;
+        this.#email = email;
     }
 
     // Método get para o atributo codigo
@@ -21,41 +27,71 @@ export default class Cliente {
         this.#codigo = value;
     }
 
-    // Método get para o atributo descricao
-    get descricao() {
-        return this.#descricao;
+    // Método get para o atributo nome
+    get nome() {
+        return this.#nome;
     }
 
-    // Método set para o atributo descricao
-    set descricao(value) {
-        this.#descricao = value;
+    // Método set para o atributo nome
+    set nome(value) {
+        this.#nome = value;
+    }
+
+    get endereco() {
+        return this.#endereco;
+    }
+
+    // Método set para o atributo endereco
+    set endereco(value) {
+        this.#endereco = value;
+    }
+
+    get telefone() {
+        return this.#telefone;
+    }
+
+    // Método set para o atributo telefone
+    set telefone(value) {
+        this.#telefone = value;
+    }
+
+    get email() {
+        return this.#email;
+    }
+
+    // Método set para o atributo email
+    set email(value) {
+        this.#email = value;
     }
 
     // Método toJSON para conversão em JSON
     toJSON() {
         return {
             codigo: this.#codigo,
-            descricao: this.#descricao
+            nome: this.#nome,
+            endereco: this.#endereco,
+            telefone: this.#telefone,
+            email: this.#email
         };
     }
 
     async gravar(){
-        const catDAO = new ClienteDAO();
-        await catDAO.gravar(this);
+        const cliDAO = new ClienteDAO();
+        await cliDAO.gravar(this);
     }
 
-    async editar(){
-        const catDAO = new ClienteDAO();
-        await catDAO.editar(this);
+    async alterar(){
+        const prodDAO = new ClienteDAO();
+        await prodDAO.alterar(this);
     }
 
     async excluir(){
-        const catDAO = new ClienteDAO();
-        await catDAO.excluir(this);
+        const cliDAO = new ClienteDAO();
+        await cliDAO.excluir(this);
     }
 
     async consultar(termo){
-        const catDAO = new ClienteDAO();
-        return await catDAO.consultar(termo);
+        const cliDAO = new ClienteDAO();
+        return await cliDAO.consultar(termo);
     }
 }
