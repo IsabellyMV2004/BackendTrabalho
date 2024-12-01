@@ -10,6 +10,10 @@ import rotaProduto from './Rotas/rotaProdutos.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import rotaCategoria from './Rotas/rotaCategoria.js';
+import rotaUsuario from './Rotas/rotaUsuarios.js';
+import rotaCliente from './Rotas/rotaClientes.js';
+import rotaFornecedor from './Rotas/rotaFornecedores.js';
+import rotaPrivilegio from './Rotas/rotaPrivilegios.js';
 
 //carregar as variáveis de ambiente a partir
 //do arquivo .env localizado na raiz do projeto
@@ -34,6 +38,10 @@ app.use(express.static('./publico'));
 
 app.use("/produtos",rotaProduto);
 app.use("/categorias",rotaCategoria);
+app.use("/clientes",rotaCliente);
+app.use("/fornecedores",rotaFornecedor);
+app.use("/usuarios",rotaUsuario);
+app.use("/privilegios",rotaPrivilegio);
 //app.use('/clientes',rotaCliente);
 //app.use('/fornecedores', rotaFornecedor);
 //app.use('/usuarios', rotaUsuario);
