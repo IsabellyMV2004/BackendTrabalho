@@ -20,7 +20,7 @@ import rotaPrivilegio from './Rotas/rotaPrivilegios.js';
 dotenv.config();
 
 const host = "0.0.0.0"; //todas as placas de rede do computador que está executando a aplicação
-const porta = 3000;
+const porta = 4000;
 
 const app = express(); //aplicação completa HTTP
 //prepara a aplicação para processar dados no formato JSON
