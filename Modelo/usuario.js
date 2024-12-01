@@ -1,4 +1,4 @@
-import UsuarioDAO from "../Persistencia/UsuarioDAO.js";
+import UsuarioDAO from "../Persistencia/usuarioDAO.js";
 
 export default class Categoria {
     // Atributos privados usando a sintaxe #
