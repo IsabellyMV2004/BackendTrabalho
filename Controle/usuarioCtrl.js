@@ -1,8 +1,8 @@
 //É a classe responsável por traduzir requisições HTTP e produzir respostas HTTP
-import Produto from "../Modelo/produto.js";
+import Usuario from "../Modelo/usuario.js";
 import Privilegio from "../Modelo/privilegio.js";
 
-export default class ProdutoCtrl {
+export default class UsuarioCtrl {
 
     gravar(requisicao, resposta) {
         //preparar o destinatário que a resposta estará no formato JSON
@@ -14,32 +14,39 @@ export default class ProdutoCtrl {
             const nome = requisicao.body.nome;
             const telefone = requisicao.body.telefone;
             const endereco = requisicao.body.endereco;
-            const privilegio = requisicao.body.privilegio;
+            const privilegio = requisicao.body.privilegios || {};
+            if (!privilegio || !privilegio.codigo) {
+                return resposta.status(400).json({
+                    "status": false,
+                    "mensagem": "Privilegio não informado ou inválido."
+                });
+            }
+
             const priv = new Privilegio(privilegio.codigo);
             priv.consultar(privilegio.codigo).then((listaPrivilegios) => {
                 if (listaPrivilegios.length > 0) {
                     //pseudo validação
-                    if (email && senha > 0 &&
-                        nome > 0 && telefone >= 0 &&
-                        endereco && dataValidade && privilegio.codigo > 0) {
-                        //gravar o produto
+                    if (email && senha &&
+                        nome && telefone &&
+                        endereco && privilegio.codigo > 0) {
+                        //gravar o usuario
 
-                        const produto = new Produto(0,
+                        const usuario = new Usuario(0,
                             email, senha, nome,
-                            telefone, endereco, dataValidade, priv);
+                            telefone, endereco, priv);
 
-                        produto.incluir()
+                        usuario.incluir()
                             .then(() => {
                                 resposta.status(200).json({
                                     "status": true,
-                                    "mensagem": "Produto adicionado com sucesso!",
-                                    "codigo": produto.codigo
+                                    "mensagem": "Usuario adicionado com sucesso!",
+                                    "codigo": usuario.codigo
                                 });
                             })
                             .catch((erro) => {
                                 resposta.status(500).json({
                                     "status": false,
-                                    "mensagem": "Não foi possível incluir o produto: " + erro.message
+                                    "mensagem": "Não foi possível incluir o usuario: " + erro.message
                                 });
                             });
                     }
@@ -47,7 +54,7 @@ export default class ProdutoCtrl {
                         resposta.status(400).json(
                             {
                                 "status": false,
-                                "mensagem": "Informe corretamente todos os dados de um produto conforme documentação da API."
+                                "mensagem": "Informe corretamente todos os dados de um usuario conforme documentação da API."
                             }
                         );
                     }
@@ -87,31 +94,30 @@ export default class ProdutoCtrl {
             const nome = requisicao.body.nome;
             const telefone = requisicao.body.telefone;
             const endereco = requisicao.body.endereco;
-            const dataValidade = requisicao.body.dataValidade;
             const privilegio = requisicao.body.privilegio;
             //validação de regra de negócio
             const priv = new Privilegio(privilegio.codigo);
             priv.consultar(privilegio.codigo).then((lista) => {
                 if (lista.length > 0) {
                     //pseudo validação
-                    if (codigo > 0 && email && senha > 0 &&
-                        nome > 0 && telefone >= 0 &&
-                        endereco && dataValidade && privilegio.codigo > 0) {
-                        //alterar o produto
-                        const produto = new Produto(codigo,
+                    if (codigo > 0 && email && senha &&
+                        nome && telefone &&
+                        endereco && privilegio.codigo > 0) {
+                        //alterar o usuario
+                        const usuario = new Usuario(codigo,
                             email, senha, nome,
-                            telefone, endereco, dataValidade, priv);
-                        produto.alterar()
+                            telefone, endereco, priv);
+                        usuario.alterar()
                             .then(() => {
                                 resposta.status(200).json({
                                     "status": true,
-                                    "mensagem": "Produto alterado com sucesso!",
+                                    "mensagem": "Usuario alterado com sucesso!",
                                 });
                             })
                             .catch((erro) => {
                                 resposta.status(500).json({
                                     "status": false,
-                                    "mensagem": "Não foi possível alterar o produto: " + erro.message
+                                    "mensagem": "Não foi possível alterar o usuario: " + erro.message
                                 });
                             });
                     }
@@ -119,7 +125,7 @@ export default class ProdutoCtrl {
                         resposta.status(400).json(
                             {
                                 "status": false,
-                                "mensagem": "Informe corretamente todos os dados de um produto conforme documentação da API."
+                                "mensagem": "Informe corretamente todos os dados de um usuario conforme documentação da API."
                             }
                         );
                     }
@@ -158,19 +164,19 @@ export default class ProdutoCtrl {
             const codigo = requisicao.params.codigo;
             //pseudo validação
             if (codigo > 0) {
-                //alterar o produto
-                const produto = new Produto(codigo);
-                produto.excluir()
+                //alterar o usuario
+                const usuario = new Usuario(codigo);
+                usuario.excluir()
                     .then(() => {
                         resposta.status(200).json({
                             "status": true,
-                            "mensagem": "Produto excluído com sucesso!",
+                            "mensagem": "Usuario excluído com sucesso!",
                         });
                     })
                     .catch((erro) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Não foi possível excluir o produto: " + erro.message
+                            "mensagem": "Não foi possível excluir o usuario: " + erro.message
                         });
                     });
             }
@@ -178,7 +184,7 @@ export default class ProdutoCtrl {
                 resposta.status(400).json(
                     {
                         "status": false,
-                        "mensagem": "Informe um código válido de um produto conforme documentação da API."
+                        "mensagem": "Informe um código válido de um usuario conforme documentação da API."
                     }
                 );
             }
@@ -202,14 +208,14 @@ export default class ProdutoCtrl {
                 codigo = "";
             }
 
-            const produto = new Produto();
-            //método consultar retorna uma lista de produtos
-            produto.consultar(codigo)
-                .then((listaProdutos) => {
-                    resposta.status(200).json(listaProdutos
+            const usuario = new Usuario();
+            //método consultar retorna uma lista de usuarios
+            usuario.consultar(codigo)
+                .then((listaUsuarios) => {
+                    resposta.status(200).json(listaUsuarios
                         /*{
                             "status": true,
-                            "listaProdutos": listaProdutos
+                            "listaUsuarios": listaUsuarios
                         }*/
                     );
                 })
@@ -217,7 +223,7 @@ export default class ProdutoCtrl {
                     resposta.status(500).json(
                         {
                             "status": false,
-                            "mensagem": "Erro ao consultar produtos: " + erro.message
+                            "mensagem": "Erro ao consultar usuarios: " + erro.message
                         }
                     );
                 });

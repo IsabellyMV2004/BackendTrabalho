@@ -29,7 +29,7 @@ export default class ClienteDAO{
         }
     }
 
-    async gravar(cliente){
+    async incluir(cliente){
         if (cliente instanceof Cliente){
             const conexao = await conectar();
             const sql = `INSERT INTO cliente(cli_nome,cli_endereco,cli_telefone,cli_email)

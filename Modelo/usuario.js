@@ -10,21 +10,20 @@ export default class Usuario {
     #senha;
     #telefone;
     #endereco;
-    #privilegios;
+    #privilegio;
 
 
     // Construtor da classe
-    constructor(codigo=0, nome="",email="",senha="",telefone="",
-        endereco="", privilegios={}){
-        this.#codigo=codigo;
-        this.#nome=nome;
-        this.#email=email;
-        this.#senha=senha;
-        this.#telefone=telefone;
-        this.#endereco=endereco;
-        this.#privilegios = privilegios;
-}
-
+    constructor(codigo = 0, nome = "", email = "", senha = "", telefone = "", endereco = "", privilegio = {}) {
+        this.#codigo = codigo;
+        this.#nome = nome;
+        this.#email = email;
+        this.#senha = senha;
+        this.#telefone = telefone;
+        this.#endereco = endereco;
+        this.#privilegio = privilegio instanceof Privilegio ? privilegio : new Privilegio(0, ""); // instancia padrão
+    }
+    
     // Método get para o atributo codigo
     get codigo() {
         return this.#codigo;
@@ -81,13 +80,13 @@ export default class Usuario {
         this.#endereco = value;
     }
 
-    get privilegios(){
-        return this.#privilegios
+    get privilegio(){
+        return this.#privilegio;
     }
 
-    set privilegios(novoPrivilegio){
+    set privilegio(novoPrivilegio){
         if (novoPrivilegio instanceof Privilegio){
-            this.#privilegios = novoPrivilegio;
+            this.#privilegio = novoPrivilegio;
         }
     }
 
@@ -100,13 +99,14 @@ export default class Usuario {
             "senha": this.#senha,
             "telefone": this.#telefone,
             "endereco": this.#endereco,
-            "privilegios": this.#privilegios
+            "privilegios": this.#privilegio.toJSON()
         };
     }
+    
 
-    async gravar(){
+    async incluir(){
         const usoDAO = new UsuarioDAO();
-        await usoDAO.gravar(this);
+        await usoDAO.incluir(this);
     }
 
     async alterar(){
