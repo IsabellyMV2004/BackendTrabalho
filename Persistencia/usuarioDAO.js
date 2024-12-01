@@ -11,7 +11,7 @@ export default class UsuarioDAO {
     async init() {
         try 
         {
-            const conexao = await conectar(); //retorna uma conexão
+            const conexao = await conectar(); 
             const sql = `
             CREATE TABLE IF NOT EXISTS usuario(
                 usu_codigo INT NOT NULL AUTO_INCREMENT,
