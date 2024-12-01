@@ -56,7 +56,7 @@ export default class PrivilegioDAO{
             await conexao.release();
         }
     }
-
+/*
     async consultar(termo){
         let sql = "";
         let parametros = [];
@@ -82,6 +82,34 @@ export default class PrivilegioDAO{
         
         return listaPrivilegio;
 
-    }
+    }*/
+
+        async consultar(termo) {
+            //resuperar as linhas da tabela privilegio e transformá-las de volta em produtos
+            const conexao = await conectar();
+            let sql = "";
+            let parametros = [];
+            if (isNaN(parseInt(termo))) {
+                sql = `SELECT * FROM privilegio
+                       WHERE descricao LIKE ?`;
+                parametros = ['%' + termo + '%'];
+            }
+            else {
+                sql = `SELECT * FROM privilegio
+                       WHERE codigo = ?`
+                parametros = [termo];
+            }
+            const [linhas, campos] = await conexao.execute(sql, parametros);
+            let listaPrivilegios = [];
+            for (const linha of linhas) {
+                const privilegio = new Privilegio(
+                    linha['codigo'],
+                    linha['descricao']
+                );
+                listaPrivilegios.push(privilegio);
+            }
+            await conexao.release();
+            return listaPrivilegios;
+        }
 
 }

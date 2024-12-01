@@ -56,7 +56,7 @@ export default class CategoriaDAO{
             await conexao.release();
         }
     }
-
+/*
     async consultar(termo){
         let sql = "";
         let parametros = [];
@@ -82,6 +82,34 @@ export default class CategoriaDAO{
         
         return listaCategoria;
 
-    }
+    }*/
+
+        async consultar(termo) {
+            //resuperar as linhas da tabela categoria e transformá-las de volta em produtos
+            const conexao = await conectar();
+            let sql = "";
+            let parametros = [];
+            if (isNaN(parseInt(termo))) {
+                sql = `SELECT * FROM categoria
+                       WHERE descricao LIKE ?`;
+                parametros = ['%' + termo + '%'];
+            }
+            else {
+                sql = `SELECT * FROM categoria
+                       WHERE codigo = ?`
+                parametros = [termo];
+            }
+            const [linhas, campos] = await conexao.execute(sql, parametros);
+            let listaCategorias = [];
+            for (const linha of linhas) {
+                const categoria = new Categoria(
+                    linha['codigo'],
+                    linha['descricao']
+                );
+                listaCategorias.push(categoria);
+            }
+            await conexao.release();
+            return listaCategorias;
+        }
 
 }

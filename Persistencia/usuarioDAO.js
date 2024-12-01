@@ -20,9 +20,9 @@ export default class UsuarioDAO {
                 usu_nome VARCHAR(200) NOT NULL,
                 usu_telefone VARCHAR(12) NOT NULL DEFAULT 0,
                 usu_endereco VARCHAR(200),
-                fk_codigo_usu INT NOT NULL,
+                fk_codigo_priv INT NOT NULL,
                 CONSTRAINT pk_usuario PRIMARY KEY(usu_codigo),
-                CONSTRAINT fk_privilegio FOREIGN KEY(fk_codigo_usu) REFERENCES privilegio(codigo) 
+                CONSTRAINT fk_privilegio FOREIGN KEY(fk_codigo_priv) REFERENCES privilegio(codigo) 
             )
         `;
             await conexao.execute(sql);
@@ -36,8 +36,8 @@ export default class UsuarioDAO {
     async incluir(usuario) {
         if (usuario instanceof Usuario) {
             const conexao = await conectar();
-            const sql = `INSERT INTO usuario(usu_email,usu_senha,usu_nome,usu_telefone,usu_endereco, fk_codigo_usu)
-                values(?,?,?,?,?,str_to_date(?,'%d/%m/%Y'),?)
+            const sql = `INSERT INTO usuario(usu_email,usu_senha,usu_nome,usu_telefone,usu_endereco, fk_codigo_priv)
+                values(?,?,?,?,?,?)
             `;
             let parametros = [
                 usuario.email,
@@ -55,7 +55,7 @@ export default class UsuarioDAO {
     async alterar(usuario) {
         if (usuario instanceof Usuario) {
             const conexao = await conectar();
-            const sql = `UPDATE usuario SET usu_email=?,usu_senha=?,usu_nome=?,usu_telefone=?,usu_endereco=?, fk_codigo_usu = ?
+            const sql = `UPDATE usuario SET usu_email=?,usu_senha=?,usu_nome=?,usu_telefone=?,usu_endereco=?, fk_codigo_priv = ?
                 WHERE usu_codigo = ?
             `;
             let parametros = [
@@ -77,14 +77,14 @@ export default class UsuarioDAO {
         let sql = "";
         let parametros = [];
         if (isNaN(parseInt(termo))) {
-            sql = `SELECT * FROM usuario p
-                   INNER JOIN privilegio c ON p.fk_codigo_usu = c.codigo
+            sql = `SELECT * FROM usuario u
+                   INNER JOIN privilegio p ON u.fk_codigo_priv = p.codigo
                    WHERE usu_email LIKE ?`;
             parametros = ['%' + termo + '%'];
         }
         else {
-            sql = `SELECT * FROM usuario p
-                   INNER JOIN privilegio c ON p.fk_codigo_usu = c.codigo 
+            sql = `SELECT * FROM usuario u
+                   INNER JOIN privilegio p ON u.fk_codigo_priv = p.codigo
                    WHERE usu_codigo = ?`
             parametros = [termo];
         }
