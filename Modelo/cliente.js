@@ -9,13 +9,13 @@ export default class Cliente {
     #email;
 
     // Construtor da classe
-    constructor(codigo, nome, endereco, telefone, email) {
-        this.#codigo = codigo;    
-        this.#nome = nome;  
-        this.#endereco = endereco;
-        this.#telefone = telefone;
-        this.#email = email;
-    }
+    constructor(codigo=0, nome="",endereco="",telefone="",email=""){
+            this.#codigo=codigo;
+            this.#nome=nome;
+            this.#endereco=endereco;
+            this.#telefone=telefone;
+            this.#email=email;
+}
 
     // Método get para o atributo codigo
     get codigo() {
@@ -67,22 +67,22 @@ export default class Cliente {
     // Método toJSON para conversão em JSON
     toJSON() {
         return {
-            codigo: this.#codigo,
-            nome: this.#nome,
-            endereco: this.#endereco,
-            telefone: this.#telefone,
-            email: this.#email
+            "codigo": this.#codigo,
+            "nome": this.#nome,
+            "endereco": this.#endereco,
+            "telefone": this.#telefone,
+            "email": this.#email
         };
     }
 
-    async gravar(){
+    async incluir(){
         const cliDAO = new ClienteDAO();
-        await cliDAO.gravar(this);
+        await cliDAO.incluir(this); 
     }
 
-    async alterar(){
-        const prodDAO = new ClienteDAO();
-        await prodDAO.alterar(this);
+    async consultar(termo){
+        const cliDAO = new ClienteDAO();
+        return await cliDAO.consultar(termo);
     }
 
     async excluir(){
@@ -90,8 +90,8 @@ export default class Cliente {
         await cliDAO.excluir(this);
     }
 
-    async consultar(termo){
+    async alterar(){
         const cliDAO = new ClienteDAO();
-        return await cliDAO.consultar(termo);
+        await cliDAO.alterar(this);
     }
 }
