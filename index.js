@@ -42,6 +42,8 @@ app.use("/clientes",rotaCliente);
 app.use("/fornecedores",rotaFornecedor);
 app.use("/usuarios",rotaUsuario);
 app.use("/privilegios",rotaPrivilegio);
+
+
 //app.use('/clientes',rotaCliente);
 //app.use('/fornecedores', rotaFornecedor);
 //app.use('/usuarios', rotaUsuario);
