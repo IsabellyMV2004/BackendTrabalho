@@ -1,6 +1,8 @@
 import UsuarioDAO from "../Persistencia/usuarioDAO.js";
+import Privilegio from "./privilegio.js";
 
-export default class Categoria {
+
+export default class Usuario {
     // Atributos privados usando a sintaxe #
     #codigo;
     #nome;
@@ -8,19 +10,20 @@ export default class Categoria {
     #senha;
     #telefone;
     #endereco;
-    #nivel;
+    #privilegios;
 
 
     // Construtor da classe
-    constructor(codigo, nome, email, senha, telefone, endereco, nivel) {
-        this.#codigo = codigo; 
-        this.#nome = nome; 
-        this.#email = email;
-        this.#senha = senha; 
-        this.#telefone = telefone;
-        this.#endereco = endereco;
-        this.#nivel = nivel;
-    }
+    constructor(codigo=0, nome="",email="",senha="",telefone="",
+        endereco="", privilegios={}){
+        this.#codigo=codigo;
+        this.#nome=nome;
+        this.#email=email;
+        this.#senha=senha;
+        this.#telefone=telefone;
+        this.#endereco=endereco;
+        this.#privilegios = privilegios;
+}
 
     // Método get para o atributo codigo
     get codigo() {
@@ -78,25 +81,26 @@ export default class Categoria {
         this.#endereco = value;
     }
 
-    get nivel() {
-        return this.#nivel;
+    get privilegios(){
+        return this.#privilegios
     }
 
-    // Método set para o atributo descricao
-    set nivel(value) {
-        this.#nivel = value;
+    set privilegios(novoPrivilegio){
+        if (novoPrivilegio instanceof Privilegio){
+            this.#privilegios = novoPrivilegio;
+        }
     }
 
     // Método toJSON para conversão em JSON
     toJSON() {
         return {
-            codigo: this.#codigo,
-            nome: this.#nome,
-            email: this.#email,
-            senha: this.#senha,
-            telefone: this.#telefone,
-            endereco: this.#endereco,
-            nivel: this.#nivel
+            "codigo": this.#codigo,
+            "nome": this.#nome,
+            "email": this.#email,
+            "senha": this.#senha,
+            "telefone": this.#telefone,
+            "endereco": this.#endereco,
+            "privilegios": this.#privilegios
         };
     }
 

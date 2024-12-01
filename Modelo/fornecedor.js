@@ -10,14 +10,15 @@ export default class Fornecedor {
     #produtos = [];
 
     // Construtor da classe
-    constructor(codigo, nome, endereco, contato, cpf) {
-        this.#codigo = codigo;    
-        this.#nome = nome;  
-        this.#endereco = endereco;
-        this.#contato = contato;
-        this.#cpf = cpf;
-        this.#produtos = []; // Inicializa a lista de produtos como vazia
-    }
+    constructor(codigo=0, nome="",endereco="",contato="",cpf="",
+        produtos=[]){
+        this.#codigo=codigo;
+        this.#nome=nome;
+        this.#endereco=endereco;
+        this.#contato=contato;
+        this.#cpf=cpf;
+        this.#produtos=produtos;
+}
     
 
     // Método get para o atributo codigo

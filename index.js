@@ -45,13 +45,6 @@ app.use("/usuarios",rotaUsuario);
 app.use("/privilegios",rotaPrivilegio);
 
 
-console.log("IP_BANCO_DE_DADOS:", process.env.IP_BANCO_DE_DADOS);
-console.log("PORTA_BANCO_DE_DADOS:", process.env.PORTA_BANCO_DE_DADOS);
-console.log("BASE_DE_DADOS:", process.env.BASE_DE_DADOS);
-console.log("BD_USUARIO:", process.env.BD_USUARIO);
-console.log("BD_SENHA:", process.env.BD_SENHA);
-
-
 //app.use('/clientes',rotaCliente);
 //app.use('/fornecedores', rotaFornecedor);
 //app.use('/usuarios', rotaUsuario);
