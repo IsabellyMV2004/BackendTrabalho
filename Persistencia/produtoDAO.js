@@ -22,7 +22,6 @@ export default class ProdutoDAO {
                 prod_urlImagem VARCHAR(250),
                 prod_dataValidade DATE NOT NULL,
                 fk_codigo_cat INT NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 CONSTRAINT pk_produto PRIMARY KEY(prod_codigo),
                 CONSTRAINT fk_categoria FOREIGN KEY(fk_codigo_cat) REFERENCES categoria(codigo) 
             )
@@ -39,7 +38,7 @@ export default class ProdutoDAO {
         if (produto instanceof Produto) {
             const conexao = await conectar();
             const sql = `INSERT INTO produto(prod_descricao,prod_precoCusto,prod_precoVenda,prod_qtdEstoque,prod_urlImagem,prod_dataValidade, fk_codigo_cat)
-                values(?,?,?,?,?,?)
+                values(?,?,?,?,?,str_to_date(?,'%d/%m/%Y'),?)
             `;
             let parametros = [
                 produto.descricao,

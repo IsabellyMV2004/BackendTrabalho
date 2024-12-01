@@ -15,7 +15,13 @@ export default class ProdutoCtrl {
             const qtdEstoque = requisicao.body.qtdEstoque;
             const urlImagem = requisicao.body.urlImagem;
             const dataValidade = requisicao.body.dataValidade;
-            const categoria = requisicao.body.categoria;
+            const categoria = requisicao.body.categoria || {};
+            if (!categoria || !categoria.codigo) {
+                return resposta.status(400).json({
+                    "status": false,
+                    "mensagem": "Categoria não informado ou inválido."
+                });
+            }
             const categ = new Categoria(categoria.codigo);
             categ.consultar(categoria.codigo).then((listaCategorias) => {
                 if (listaCategorias.length > 0) {
@@ -193,7 +199,7 @@ export default class ProdutoCtrl {
 
         }
     }
-    
+
     consultar(requisicao, resposta) {
         resposta.type("application/json");
         if (requisicao.method == "GET") {

@@ -7,17 +7,14 @@ export default class Fornecedor {
     #endereco;
     #contato;
     #cpf;
-    #produtos = [];
 
     // Construtor da classe
-    constructor(codigo=0, nome="",endereco="",contato="",cpf="",
-        produtos=[]){
+    constructor(codigo=0, nome="",endereco="",contato="",cpf=""){
         this.#codigo=codigo;
         this.#nome=nome;
         this.#endereco=endereco;
         this.#contato=contato;
         this.#cpf=cpf;
-        this.#produtos=produtos;
 }
     
 
@@ -67,48 +64,27 @@ export default class Fornecedor {
     set cpf(value) {
         this.#cpf = value;
     }
-
-    get produtos() {
-        return this.#produtos;
-    }
-    
-    adicionarProduto(produto) {
-        if (produto) {
-            this.#produtos.push(produto);
-        } else {
-            throw new Error("Produto inválido.");
-        }
-    }
-    
-    removerProduto(produtoId) {
-        this.#produtos = this.#produtos.filter(produto => produto.codigo !== produtoId);
-    }
-    
-    listarProdutos() {
-        return this.#produtos;
-    }
     
 
     // Método toJSON para conversão em JSON
     toJSON() {
         return {
-            codigo: this.#codigo,
-            nome: this.#nome,
-            endereco: this.#endereco,
-            contato: this.#contato,
-            cpf: this.#cpf,
-            produtos: this.#produtos.map(produto => produto.toJSON())
+            "codigo": this.#codigo,
+            "nome": this.#nome,
+            "endereco": this.#endereco,
+            "contato": this.#contato,
+            "cpf": this.#cpf
         };
     }
 
-    async gravar(){
+    async incluir(){
         const fornDAO = new FornecedorDAO();
-        await fornDAO.gravar(this);
+        await fornDAO.incluir(this); 
     }
 
-    async alterar(){
-        const prodDAO = new FornecedorDAO();
-        await prodDAO.alterar(this);
+    async consultar(termo){
+        const fornDAO = new FornecedorDAO();
+        return await fornDAO.consultar(termo);
     }
 
     async excluir(){
@@ -116,8 +92,8 @@ export default class Fornecedor {
         await fornDAO.excluir(this);
     }
 
-    async consultar(termo){
+    async alterar(){
         const fornDAO = new FornecedorDAO();
-        return await fornDAO.consultar(termo);
+        await fornDAO.alterar(this);
     }
 }

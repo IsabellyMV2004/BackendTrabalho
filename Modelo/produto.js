@@ -102,7 +102,7 @@ export default class Produto{
             "qtdEstoque":this.#qtdEstoque,
             "urlImagem":this.#urlImagem,
             "dataValidade":this.#dataValidade,
-            "categoria":this.#categoria
+            "categoria":this.#categoria.toJSON()
         }
     }
 
@@ -127,4 +127,3 @@ export default class Produto{
         await prodDAO.alterar(this);
     }
 }
-
