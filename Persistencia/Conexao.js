@@ -18,7 +18,7 @@ export default async function conectar(){
             "password":process.env.BD_SENHA,
             "connectTimeout":60000,
             "waitForConnections":true,
-            "connectionLimit":100000,
+            "connectionLimit":150000,
             "queueLimit":20
         });
 
