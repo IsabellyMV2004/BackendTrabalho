@@ -105,22 +105,23 @@ export default class Usuario {
     
 
     async incluir(){
-        const usoDAO = new UsuarioDAO();
-        await usoDAO.incluir(this);
-    }
-
-    async alterar(){
-        const prodDAO = new UsuarioDAO();
-        await prodDAO.alterar(this);
-    }
-
-    async excluir(){
-        const usoDAO = new UsuarioDAO();
-        await usoDAO.excluir(this);
+        //instanciar a camada de persistencia do produto
+        const usuDAO = new UsuarioDAO();
+        await usuDAO.incluir(this); //this referência a si mesmo
     }
 
     async consultar(termo){
-        const usoDAO = new UsuarioDAO();
-        return await usoDAO.consultar(termo);
+        const usuDAO = new UsuarioDAO();
+        return await usuDAO.consultar(termo);
+    }
+
+    async excluir(){
+        const usuDAO = new UsuarioDAO();
+        await usuDAO.excluir(this);
+    }
+
+    async alterar(){
+        const usuDAO = new UsuarioDAO();
+        await usuDAO.alterar(this);
     }
 }
