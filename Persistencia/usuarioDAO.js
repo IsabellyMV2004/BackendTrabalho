@@ -45,7 +45,7 @@ export default class UsuarioDAO {
                 usuario.nome,
                 usuario.telefone,
                 usuario.endereco,
-                usuario.privilegio.codigo
+                usuario.privilegios.codigo
             ]; //dados do usuario
             const resultado = await conexao.execute(sql, parametros);
             usuario.codigo = resultado[0].insertId;
@@ -64,7 +64,7 @@ export default class UsuarioDAO {
                 usuario.nome,
                 usuario.telefone,
                 usuario.endereco,
-                usuario.privilegio.codigo,
+                usuario.privilegios.codigo,
                 usuario.codigo
             ]; //dados do usuario
             await conexao.execute(sql, parametros);
@@ -91,7 +91,7 @@ export default class UsuarioDAO {
         const [linhas, campos] = await conexao.execute(sql, parametros);
         let listaUsuarios = [];
         for (const linha of linhas) {
-            const privilegio = new Privilegio(linha['codigo'],linha["email"]);    
+            const privilegios = new Privilegio(linha['codigo'],linha["email"]);    
             const usuario = new Usuario(
                 linha['usu_codigo'],
                 linha['usu_email'],
@@ -99,7 +99,7 @@ export default class UsuarioDAO {
                 linha['usu_nome'],
                 linha['usu_telefone'],
                 linha['usu_endereco'],
-                privilegio
+                privilegios
             );
             listaUsuarios.push(usuario);
         }

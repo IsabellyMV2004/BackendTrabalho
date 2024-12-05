@@ -14,21 +14,21 @@ export default class UsuarioCtrl {
             const nome = requisicao.body.nome;
             const telefone = requisicao.body.telefone;
             const endereco = requisicao.body.endereco;
-            const privilegio = requisicao.body.privilegios || {};
-            if (!privilegio || !privilegio.codigo) {
+            const privilegios = requisicao.body.privilegios || {};
+            if (!privilegios || !privilegios.codigo) {
                 return resposta.status(400).json({
                     "status": false,
                     "mensagem": "Privilegio não informado ou inválido."
                 });
             }
 
-            const priv = new Privilegio(privilegio.codigo);
-            priv.consultar(privilegio.codigo).then((listaPrivilegios) => {
+            const priv = new Privilegio(privilegios.codigo);
+            priv.consultar(privilegios.codigo).then((listaPrivilegios) => {
                 if (listaPrivilegios.length > 0) {
                     //pseudo validação
                     if (email && senha &&
                         nome && telefone &&
-                        endereco && privilegio.codigo > 0) {
+                        endereco && privilegios.codigo > 0) {
                         //gravar o usuario
 
                         const usuario = new Usuario(0,
@@ -62,13 +62,13 @@ export default class UsuarioCtrl {
                 else {
                     resposta.status(400).json({
                         "status": false,
-                        "mensagem": "A privilegio informada não existe!"
+                        "mensagem": "A privilegios informada não existe!"
                     });
                 }
             }).catch((erro) => {
                 resposta.status(500).json({
                     "status": false,
-                    "mensagem": "Não foi possível validar a privilegio: " + erro.message
+                    "mensagem": "Não foi possível validar a privilegios: " + erro.message
                 });
             });
         }
@@ -94,15 +94,15 @@ export default class UsuarioCtrl {
             const nome = requisicao.body.nome;
             const telefone = requisicao.body.telefone;
             const endereco = requisicao.body.endereco;
-            const privilegio = requisicao.body.privilegio;
+            const privilegios = requisicao.body.privilegios;
             //validação de regra de negócio
-            const priv = new Privilegio(privilegio.codigo);
-            priv.consultar(privilegio.codigo).then((lista) => {
+            const priv = new Privilegio(privilegios.codigo);
+            priv.consultar(privilegios.codigo).then((lista) => {
                 if (lista.length > 0) {
                     //pseudo validação
                     if (codigo > 0 && email && senha &&
                         nome && telefone &&
-                        endereco && privilegio.codigo > 0) {
+                        endereco && privilegios.codigo > 0) {
                         //alterar o usuario
                         const usuario = new Usuario(codigo,
                             email, senha, nome,
@@ -134,14 +134,14 @@ export default class UsuarioCtrl {
                 else {
                     resposta.status(400).json({
                         "status": false,
-                        "mensagem": "A privilegio informada não existe!"
+                        "mensagem": "A privilegios informada não existe!"
                     });
                 }
 
             }).catch((erro) => {
                 resposta.status(500).json({
                     "status": false,
-                    "mensagem": "Não foi possível validar a privilegio: " + erro.message
+                    "mensagem": "Não foi possível validar a privilegios: " + erro.message
                 });
             });
 
